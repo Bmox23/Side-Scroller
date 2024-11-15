@@ -45,3 +45,9 @@ class Enemy:
         # Reset enemy health and position
         self.health = self.max_health
         self.x = random.randint(100, 400)  # Reset to a new random position
+
+    def respawn(self):
+    # Respawn enemy with full health and at a new random position
+        self.health = self.max_health
+        self.x = random.randint(100, self.screen_width - 200)
+        self.y = random.randint(50, 400)

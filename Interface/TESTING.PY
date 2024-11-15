@@ -8,6 +8,7 @@ import time
 # Initialize Pygame
 pygame.init()
 
+
 # Constants for screen dimensions and colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -15,7 +16,8 @@ RED = (255, 0, 0)
 
 # Set up the display
 screen = pygame.display.set_mode((800, 600))
-SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
+SCREEN_WIDTH = screen.get_width()
+SCREEN_HEIGHT = screen.get_height()
 pygame.display.set_caption("Side Scroller Game UI")
 
 # Create Player and Enemy objects
@@ -28,7 +30,7 @@ enemy_bullets = []
 
 # Special attack variables
 special_attack_last_used = 0
-special_attack_cooldown = 30  # Cooldown time in seconds
+special_attack_cooldown = 10  # Cooldown time in seconds
 
 # Game loop variables
 clock = pygame.time.Clock()
@@ -78,12 +80,12 @@ while True:
             enemy.take_damage(player.level * player.damage_per_level)
             if enemy.health <= 0:
                 player.gain_experience(random.randint(1, 10))
-                enemy.respawn(SCREEN_WIDTH)
+                enemy.respawn() # No need to pass Screen_WIDTH here
         elif bullet.x > SCREEN_WIDTH:
             bullets.remove(bullet)
 
     # Enemy shooting
-    if enemy.can_shoot():
+    if enemy.can_shoot(): 
         enemy_bullet = enemy.shoot()
         enemy_bullets.append(enemy_bullet)
 
@@ -103,11 +105,11 @@ while True:
 
     # Draw bullets
     for bullet in bullets:
-        pygame.draw.rect(screen, BLACK, bullet)
+        pygame.draw.circle(screen, BLACK, (bullet.x, bullet.y), 5)  # Draw each bullet as a circle for separation
 
     # Draw enemy bullets
     for enemy_bullet in enemy_bullets:
-        pygame.draw.rect(screen, (255, 0, 0), enemy_bullet)
+        pygame.draw.circle(screen, RED, (enemy_bullet.x, enemy_bullet.y), 5)  # Draw enemy bullets as separate circles
 
     # Draw HUD
     player.draw_hud(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -130,3 +132,4 @@ while True:
 
     # Cap the frame rate
     clock.tick(60)
+ 
